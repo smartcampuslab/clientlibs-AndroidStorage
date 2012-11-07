@@ -13,6 +13,8 @@ import eu.trentorise.smartcampus.storage.IStorage;
 
 public interface IRemoteStorage extends IStorage {
 
+	public void setConfig(String authToken, String host, String service);
+	
 	public <T extends BasicObject> T create(T input) throws DataException, ConnectionException, ProtocolException, SecurityException;
 	public <T extends BasicObject> void update(T input, boolean upsert) throws DataException, ConnectionException, ProtocolException, SecurityException;
 	public void delete(String id, Class<? extends BasicObject> cls)  throws DataException, ConnectionException, ProtocolException, SecurityException;

@@ -35,12 +35,16 @@ public class RemoteStorage implements IRemoteStorage {
 
 	private ProtocolCarrier mProtocolCarrier;
 
-	public RemoteStorage(Context ctx, String appToken, String authToken, String host, String service) {
-		super();
-		this.appToken = appToken;
+	@Override
+	public void setConfig(String authToken, String host, String service) {
 		this.authToken = authToken;
 		this.host = host;
 		this.service = service;
+	}
+
+	public RemoteStorage(Context ctx, String appToken) {
+		super();
+		this.appToken = appToken;
 		mProtocolCarrier = new ProtocolCarrier(ctx, appToken);
 	}
 
