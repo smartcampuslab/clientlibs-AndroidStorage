@@ -13,7 +13,7 @@ public interface ISyncStorage extends ILocalStorage {
 	public static final String FIELD_TYPE = "_type";
 	public static final String FIELD_SYNC_FLAG = "_sync";
 
-	public void synchronize(String authToken, String host, String service) throws SecurityException, ConnectionException, DataException, ProtocolException, StorageConfigurationException; 
+	public SyncData synchronize(String authToken, String host, String service) throws SecurityException, ConnectionException, DataException, ProtocolException, StorageConfigurationException; 
 
 	public void setSyncVersion(long version); 
 	

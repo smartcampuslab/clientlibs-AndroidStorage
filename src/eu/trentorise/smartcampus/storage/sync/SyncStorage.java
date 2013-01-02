@@ -114,10 +114,10 @@ public class SyncStorage implements ISyncStorage {
 	}
 
 	@Override
-	public void synchronize(String authToken, String host, String service) throws SecurityException,
+	public SyncData synchronize(String authToken, String host, String service) throws SecurityException,
 			ConnectionException, DataException, ProtocolException, StorageConfigurationException {
 		try {
-			helper.synchronize(mContext, mProtocolCarrier, authToken, appToken, host, service);
+			return helper.synchronize(mContext, mProtocolCarrier, authToken, appToken, host, service);
 		} finally {
 			helper.close();
 		}	
