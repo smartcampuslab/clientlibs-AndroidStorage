@@ -18,8 +18,20 @@ package eu.trentorise.smartcampus.storage.db;
 import eu.trentorise.smartcampus.storage.BasicObject;
 import android.content.ContentValues;
 
+/**
+ * Prototype for the batch modification element descriptors adopted to android storage APIs. 
+ * Should not be instantiated directly.
+ * @author raman
+ *
+ */
 public class BatchUpdateModel {
 
+	/**
+	 * Prototype for the batch 'delete' element descriptor adopted to android storage APIs. 
+	 * Should not be instantiated directly.
+	 * @author raman
+	 *
+	 */
 	public static class DeleteModel extends BatchUpdateModel {
 		public String id;
 		public Class<? extends BasicObject> cls;
@@ -29,6 +41,12 @@ public class BatchUpdateModel {
 			this.cls = cls;
 		}
 	}
+	/**
+	 * Prototype for the batch 'create' element descriptor adopted to android storage APIs. 
+	 * Should not be instantiated directly.
+	 * @author raman
+	 *
+	 */
 	public static class CreateModel extends BatchUpdateModel {
 		public  BasicObject object;
 		public ContentValues extensions;
@@ -38,6 +56,12 @@ public class BatchUpdateModel {
 			this.extensions = extensions;
 		}
 	}
+	/**
+	 * Prototype for the batch 'update' element descriptor adopted to android storage APIs. 
+	 * Should not be instantiated directly.
+	 * @author raman
+	 *
+	 */
 	public static class UpdateModel extends BatchUpdateModel {
 		public  BasicObject object;
 		public ContentValues extensions;

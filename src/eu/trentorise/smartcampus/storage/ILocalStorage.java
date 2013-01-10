@@ -19,7 +19,14 @@ import java.util.Collection;
 import java.util.List;
 
 import android.database.Cursor;
-
+/**
+ * An extension of the {@link IStorage} interface with the method 
+ * applicable to the SQL-based implementations of the storage. in addition to the basic CRUD
+ * methods allows for SQL query methods.
+ * 
+ * @author raman
+ *
+ */
 public interface ILocalStorage extends IStorage {
 
 	public static final String FIELD_ID = "id";
@@ -33,11 +40,32 @@ public interface ILocalStorage extends IStorage {
 	public <T extends BasicObject> T getObjectById(String id, Class<T> cls) throws DataException, StorageConfigurationException;
 	public <T extends BasicObject> Collection<T> getObjects(Class<T> cls) throws DataException, StorageConfigurationException;
 
+	/**
+	 * Retrieve a set of objects that satisfy the specified selection criteria (SQL WHERE clause).
+	 * @param cls Class of interest to be queries
+	 * @param selection WHERE clause
+	 * @param args query parameters
+	 * @return List of objects matching the criteria
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 */
 	public <T extends BasicObject> Collection<T> query(Class<T> cls, String selection,
 			String[] args) throws DataException, StorageConfigurationException;
 
+	/**
+	 * Retrieve the raw {@link Cursor} object over the SQL select query
+	 * @param query SQL select query string
+	 * @param args query parameter values
+	 * @return {@link Cursor} object
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 */
 	public Cursor rawQuery(String query, String[] args)
 			throws DataException, StorageConfigurationException;
 
+	/**
+	 * Release storage cursor
+	 * @param cursor
+	 */
 	public void cleanCursor(Cursor cursor);
 }

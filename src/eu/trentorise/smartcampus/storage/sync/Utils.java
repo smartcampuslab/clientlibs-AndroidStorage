@@ -25,26 +25,67 @@ import org.codehaus.jackson.map.introspect.NopAnnotationIntrospector;
 import android.content.Context;
 import eu.trentorise.smartcampus.storage.BasicObject;
 
+/**
+ * Utility methods used by storage implementations.
+ * @author raman
+ *
+ */
 public class Utils {
 	private static final String PREF_SYNC_STORAGE_VERSIONS = "PrefSyncStorageObjectVersions";
 	private static final String PREF_SYNC_STORAGE_DB_VERSIONS = "PrefSyncStorageDBVersions";
 	private static final String PREF_SYNC_STORAGE_DB_NAMES = "PrefSyncStorageDBNames";
 
+	/**
+	 * Read current DB version used by the specific app from app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @return
+	 */
 	public static int getDBVersion(Context mContext, String appToken) {
 		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).getInt(appToken, 0);
 	}
+	/**
+	 * Read current value of the global object version counter.
+	 * @param mContext
+	 * @param appToken
+	 * @return
+	 */
 	public static long getObjectVersion(Context mContext, String appToken) {
 		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).getLong(appToken, -1);
 	}
+	/**
+	 * Read current DB name used by the specific app from app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @return
+	 */
 	public static String getDBName(Context mContext, String appToken) {
 		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_NAMES, Context.MODE_PRIVATE).getString(appToken, "_DB");
 	}
+	/**
+	 * Write last used global object version to the app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @param version
+	 */
 	public static void writeObjectVersion(Context mContext, String appToken, long version) {
 		mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).edit().putLong(appToken, version).commit();
 	}
+	/**
+	 * Write DB version used by the specific app to the app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @param version
+	 */
 	public static void writeDBVersion(Context mContext, String appToken, int version) {
 		mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).edit().putInt(appToken, version).commit();
 	}
+	/**
+	 * Write DB name used by the specific app to the app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @param name
+	 */
 	public static void writeDBName(Context mContext, String appToken, String name) {
 		mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_NAMES, Context.MODE_PRIVATE).edit().putString(appToken, name).commit();
 	}
@@ -59,6 +100,11 @@ public class Utils {
         fullMapper.configure(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING, true);
         fullMapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
     }
+    /**
+     * Convert arbitrary {@link BasicObject} instance to JSON string
+     * @param o
+     * @return
+     */
 	@SuppressWarnings({"unchecked" })
 	public static String convertDataToJSON(BasicObject o)  {
 		try {
@@ -71,6 +117,11 @@ public class Utils {
 			return "";
 		}
 	}
+	/**
+	 * Convert JSON object to {@link Map} 
+	 * @param o
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static Map<String,Object> convertJSONToData(String o)  {
 		try {
@@ -80,6 +131,11 @@ public class Utils {
 		}
 	}
 
+	/**
+	 * Convert {@link SyncData} instance to JSON string representation
+	 * @param syncData
+	 * @return
+	 */
 	public static String convertSyncDataToJSON(SyncData syncData) {
 		try {
 			@SuppressWarnings("unchecked")
@@ -90,6 +146,11 @@ public class Utils {
 			return "";
 		}
 	}
+	/**
+	 * Convert JSON string representing synchronization data to {@link SyncData} instance
+	 * @param body
+	 * @return
+	 */
 	public static SyncData convertJSONToSyncData(String body) {
 		try {
 			return fullMapper.readValue(body, SyncData.class);

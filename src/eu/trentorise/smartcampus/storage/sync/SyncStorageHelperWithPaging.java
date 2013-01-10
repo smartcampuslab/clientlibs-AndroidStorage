@@ -23,7 +23,11 @@ import eu.trentorise.smartcampus.storage.BasicObject;
 import eu.trentorise.smartcampus.storage.DataException;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
-
+/**
+ * Synchronizable storage helper supporting the paged queries.
+ * @author raman
+ *
+ */
 public class SyncStorageHelperWithPaging extends SyncStorageHelper {
 
 	public SyncStorageHelperWithPaging(Context context, String dbName, int version, StorageConfiguration config) {

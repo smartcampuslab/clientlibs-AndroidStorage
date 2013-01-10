@@ -20,9 +20,29 @@ import java.io.Serializable;
 import eu.trentorise.smartcampus.storage.BasicObject;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 
+/**
+ * The interface defines the storage configuration that will support the ORM operations 
+ * between the object model used in the app and the SQL-basedd storage.
+ * @author raman
+ *
+ */
 public interface StorageConfiguration extends Serializable {
 
+	/**
+	 * @return list of JavaBean classes that the storage should manage.
+	 */
 	Class<? extends BasicObject>[] getClasses();
+	/**
+	 * @param cls
+	 * @return the name of the DB table where the objects of the specified class are stored
+	 * @throws StorageConfigurationException
+	 */
 	String getTableName(Class<? extends BasicObject> cls) throws StorageConfigurationException;
+	/**
+	 * return the ORM helper for the specified object class
+	 * @param cls
+	 * @return
+	 * @throws StorageConfigurationException
+	 */
 	<T extends BasicObject> BeanStorageHelper<T> getStorageHelper(Class<T> cls) throws StorageConfigurationException;
 }

@@ -25,8 +25,22 @@ import eu.trentorise.smartcampus.storage.ILocalStorageWithPaging;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
 
+/**
+ * Synchronizable storage supporting the paged queries ({@link ILocalStorageWithPaging} interface).
+ * @author raman
+ *
+ */
 public class SyncStorageWithPaging extends SyncStorage implements ILocalStorageWithPaging {
 	
+	/**
+	 * Create a new version of the storage given the app, the DB name and version, and the {@link StorageConfiguration} 
+	 * descriptor.
+	 * @param context
+	 * @param appToken
+	 * @param dbName
+	 * @param dbVersion
+	 * @param config
+	 */
 	public SyncStorageWithPaging(Context context, String appToken, String dbName, int dbVersion, StorageConfiguration config) {
 		super(context, appToken, dbName, dbVersion, config);
 	}

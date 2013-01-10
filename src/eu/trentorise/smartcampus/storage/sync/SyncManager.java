@@ -32,6 +32,11 @@ import eu.trentorise.smartcampus.storage.DataException;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 import eu.trentorise.smartcampus.storage.sync.service.SyncStorageService;
 
+/**
+ * Implements the synchronization service facade through the service binding routines.
+ * @author raman
+ *
+ */
 public class SyncManager implements ISyncManager {
 
 	private Context mContext = null;
@@ -58,6 +63,11 @@ public class SyncManager implements ISyncManager {
         }
     };
 
+    /**
+     * Create new instance in Android context, referring to the custom storage service class.
+     * @param mContext
+     * @param cls
+     */
 	public SyncManager(Context mContext, Class<? extends SyncStorageService> cls) {
 		super();
 		this.mContext = mContext;
@@ -65,6 +75,10 @@ public class SyncManager implements ISyncManager {
 		bound = true;
 	}
 	
+	/**
+     * Create new instance in Android context, referring to the {@link SyncStorageService} class.
+	 * @param mContext
+	 */
 	public SyncManager(Context mContext) {
 		super();
 		this.mContext = mContext;

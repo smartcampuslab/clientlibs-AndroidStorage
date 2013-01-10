@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import eu.trentorise.smartcampus.protocolcarrier.ProtocolCarrier;
 import eu.trentorise.smartcampus.protocolcarrier.exceptions.ConnectionException;
@@ -30,6 +31,11 @@ import eu.trentorise.smartcampus.storage.DataException;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
 
+/**
+ * Implements synchronizable storage on top of SQLite DB. Implementation relies upon {@link SyncStorageHelper}.
+ * @author raman
+ *
+ */
 public class SyncStorage implements ISyncStorage {
 
 	protected SyncStorageHelper helper = null;
@@ -39,6 +45,15 @@ public class SyncStorage implements ISyncStorage {
 	
 	protected String appToken = null;
 	
+	/**
+	 * Create a new version of the storage given the app, the DB name and version, and the {@link StorageConfiguration} 
+	 * descriptor.
+	 * @param context
+	 * @param appToken
+	 * @param dbName
+	 * @param dbVersion
+	 * @param config
+	 */
 	public SyncStorage(Context context, String appToken, String dbName, int dbVersion, StorageConfiguration config) {
 		this.mContext = context;
 		this.appToken = appToken;
@@ -48,6 +63,16 @@ public class SyncStorage implements ISyncStorage {
 		mProtocolCarrier = new ProtocolCarrier(context, appToken);
 	}
 
+	/**
+	 * Creates an instance of the storage helper class used. Subclasses may ovveride this method to 
+	 * use custom storage helper.
+	 *  
+	 * @param context
+	 * @param dbName
+	 * @param dbVersion
+	 * @param config
+	 * @return
+	 */
 	protected SyncStorageHelper createHelper(Context context, String dbName, int dbVersion, StorageConfiguration config) {
 		return new SyncStorageHelper(context, dbName, dbVersion, config);
 	}

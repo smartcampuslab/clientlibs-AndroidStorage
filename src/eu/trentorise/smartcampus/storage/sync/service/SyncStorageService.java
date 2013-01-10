@@ -37,6 +37,18 @@ import eu.trentorise.smartcampus.storage.sync.SyncStorageConfiguration;
 import eu.trentorise.smartcampus.storage.sync.SyncStorageHelper;
 import eu.trentorise.smartcampus.storage.sync.Utils;
 
+/**
+ * Default implementation of the synchronization service.
+ * May be used by different apps simultaneously. For each app, a corresponding 
+ * {@link SyncStorageTaskManager} instance is associated that handle the lifecycle of siynchronization
+ * for that specific app. 
+ * <p/>
+ * Implements the {@link SyncTaskContext} interface to handle the specific synchronization events, 
+ * such as auth token expiration, availability of new updates, and other exceptions. The application
+ * should expose this service in AndroidMainfest.xml.
+ * @author raman
+ *
+ */
 public class SyncStorageService extends Service implements SyncTaskContext {
 
 //	public static final String ACTION_START_SYNC_STORAGE = "eu.trentorise.smartcampus.storage.sync.START";

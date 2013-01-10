@@ -15,6 +15,11 @@
  ******************************************************************************/
 package eu.trentorise.smartcampus.storage;
 
+/**
+ * Exception raised in case of storage configuration inconsistencies.
+ * @author raman
+ *
+ */
 public class StorageConfigurationException extends Exception {
 	private static final long serialVersionUID = 4598501803681585519L;
 

@@ -39,6 +39,15 @@ import eu.trentorise.smartcampus.storage.BatchModel.DeleteModel;
 import eu.trentorise.smartcampus.storage.BatchModel.UpdateModel;
 import eu.trentorise.smartcampus.storage.DataException;
 
+/**
+ * Implementation of the {@link IRemoteStorage} interface. Relies upon 
+ * {@link ProtocolCarrier} to implement HTTP interactions.
+ * By convention, the CRUD operation over a specific object type
+ * use format 'server-host'/'server-address'/'canonical-class-name'/{id}. 
+ * The server should expose the REST API correspondingly.
+ * @author raman
+ *
+ */
 public class RemoteStorage implements IRemoteStorage {
 
 	private static final String OBJECTS_PATH = "objects";

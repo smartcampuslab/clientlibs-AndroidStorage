@@ -20,6 +20,13 @@ import java.util.Map;
 
 import eu.trentorise.smartcampus.storage.BasicObject;
 
+/**
+ * A container of the batch storage update to be sent over the network to the remote service. 
+ * Contains references to deleted objects, objects created and updated.
+ * Should not be instantiated directly.
+ * @author raman
+ *
+ */
 public class BatchData {
 
 	private Map<String,List<BasicObject>> created;

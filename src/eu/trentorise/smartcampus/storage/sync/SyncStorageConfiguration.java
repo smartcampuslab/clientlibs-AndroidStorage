@@ -19,6 +19,13 @@ import java.io.Serializable;
 
 import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
 
+/**
+ * Synchronizable storage configuration descriptor. Defines the configuration of the
+ * storage itself, as well as the synchronization interval (in milliseconds; if less then 0 
+ * means no periodic synchronization), and the service address parameters.
+ * @author raman
+ *
+ */
 public class SyncStorageConfiguration implements Serializable {
 	private static final long serialVersionUID = -8651964347061941712L;
 

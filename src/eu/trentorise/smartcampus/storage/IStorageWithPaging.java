@@ -16,9 +16,22 @@
 package eu.trentorise.smartcampus.storage;
 
 import java.util.Collection;
-
+/**
+ * Interface for the storage to support the 'paged' access to the list of class instances
+ * @author raman
+ *
+ */
 public interface IStorageWithPaging {
 
+	/**
+	 * Return a subset of at most 'limit' of the object instances that starts at position 'offset' in 
+	 * the whole list of instances naturally ordered.
+	 * @param cls
+	 * @param offset 
+	 * @param limit if less then 0, all the instances from the specified position returned
+	 * @return
+	 * @throws Exception
+	 */
 	public <T extends BasicObject> Collection<T> getObjects(Class<T> cls, int offset, int limit) throws Exception;
 
 }

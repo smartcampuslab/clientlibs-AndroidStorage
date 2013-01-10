@@ -21,7 +21,11 @@ import java.util.Map;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+/**
+ * Extension of the {@link SQLiteOpenHelper} to perform DB operations. 
+ * @author raman
+ *
+ */
 public class DBOpenHelper extends SQLiteOpenHelper {
 
 	protected StorageConfiguration storageConfig = null;

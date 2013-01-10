@@ -45,6 +45,16 @@ import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
 import eu.trentorise.smartcampus.storage.db.StorageHelper;
 import eu.trentorise.smartcampus.storage.sync.SyncUpdateModel.UpdateModel;
 
+/**
+ * Extends SQLite-based {@link StorageHelper} with the methods for data synchronization.
+ * The synchronization is based on the object version. Each update/create/delete increments the
+ * global counter associated with the storage. The version is then used to identify the
+ * changes since last sync session. The updates received from the remote storage, as well as the 
+ * new remote global version, are then stored locally.
+ * 
+ * @author raman
+ *
+ */
 public class SyncStorageHelper extends StorageHelper {
 
 	private static final String TABLE_SYNC = "_sync_objects";

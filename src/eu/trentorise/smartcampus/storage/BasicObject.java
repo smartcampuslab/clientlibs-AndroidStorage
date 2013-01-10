@@ -17,6 +17,17 @@ package eu.trentorise.smartcampus.storage;
 
 import java.io.Serializable;
 
+/**
+ * The base storable JavaBean object. Defines the minimal set of fields necessary for the 
+ * object-based storage infrastructure. Specifically, defines
+ * <ul>
+ * <li>id - unique object identificator</li>
+ * <li>version - current object version</li>
+ * <li>update time - timestamp of the last object modification</li>
+ * </ul>
+ * @author raman
+ *
+ */
 @SuppressWarnings("serial")
 public class BasicObject implements Serializable {
 

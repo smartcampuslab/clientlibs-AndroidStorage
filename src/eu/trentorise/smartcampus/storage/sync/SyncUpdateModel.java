@@ -18,7 +18,13 @@ package eu.trentorise.smartcampus.storage.sync;
 import eu.trentorise.smartcampus.storage.BasicObject;
 import eu.trentorise.smartcampus.storage.BatchModel;
 
-
+/**
+ * Extends batch update descriptor for update operation for the storage that
+ * is synchronized remotely. Specifically, allows for defining
+ * that the update of the object should be synchronized to remote storage or not.
+ * @author raman
+ *
+ */
 public class SyncUpdateModel extends BatchModel {
 
 	public static class UpdateModel extends BatchModel.UpdateModel {

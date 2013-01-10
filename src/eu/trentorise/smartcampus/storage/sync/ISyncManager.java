@@ -19,14 +19,54 @@ import android.os.RemoteException;
 import eu.trentorise.smartcampus.storage.DataException;
 import eu.trentorise.smartcampus.storage.StorageConfigurationException;
 
-
+/**
+ * An interface to control the life-cycle of the synchronization for a storage.
+ * @author raman
+ *
+ */
 public interface ISyncManager {
 
+	/**
+	 * Start the synchronization cycle for the specified storage. The background service
+	 * is activated upon this starting periodic synchronization (if specified)
+	 * @param authToken
+	 * @param appToken
+	 * @param config
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 * @throws RemoteException
+	 */
 	void start(String authToken, String appToken, SyncStorageConfiguration config) throws DataException, StorageConfigurationException, RemoteException;
+	/**
+	 * Stop the synchronization cylce for the specified app storage
+	 * @param appToken
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 * @throws RemoteException
+	 */
 	void stop(String appToken) throws DataException, StorageConfigurationException, RemoteException;
+	/**
+	 * Disconnect from service and release resources
+	 */
 	void disconnect();
-
+	/**
+	 * Force storage synchronization (asynchronously), given the currently used configuration.
+	 * @param authToken
+	 * @param appToken
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 * @throws RemoteException
+	 */
 	void synchronize(String authToken, String appToken) throws DataException, StorageConfigurationException, RemoteException;
+	/**
+	 * Force storage synchronization (asynchronously), given the specified used configuration.
+	 * @param authToken
+	 * @param appToken
+	 * @param config
+	 * @throws DataException
+	 * @throws StorageConfigurationException
+	 * @throws RemoteException
+	 */
 	void synchronize(String authToken, String appToken, SyncStorageConfiguration config) throws DataException, StorageConfigurationException, RemoteException;
 
 }

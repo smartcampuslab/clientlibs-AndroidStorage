@@ -15,6 +15,11 @@
  ******************************************************************************/
 package eu.trentorise.smartcampus.storage;
 
+/**
+ * Generic exception to be raised upon data read/write problem.
+ * @author raman
+ *
+ */
 public class DataException extends Exception {
 	private static final long serialVersionUID = -3560954301528483885L;
 

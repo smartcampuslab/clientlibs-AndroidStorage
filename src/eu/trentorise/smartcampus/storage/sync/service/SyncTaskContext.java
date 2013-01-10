@@ -19,11 +19,33 @@ import eu.trentorise.smartcampus.storage.db.StorageConfiguration;
 import eu.trentorise.smartcampus.storage.sync.SyncData;
 import eu.trentorise.smartcampus.storage.sync.SyncStorageHelper;
 
+/**
+ * An interface to handle synchronization events callbacks.
+ * @author raman
+ *
+ */
 public interface SyncTaskContext {
 
+	/**
+	 * @param appToken
+	 * @param config
+	 * @return {@link SyncStorageHelper} managed by the app.
+	 */
 	SyncStorageHelper getSyncStorageHelper(String appToken, StorageConfiguration config);
+	/**
+	 * Triggered when new remote sync data is available.
+	 * @param data
+	 * @param appToken
+	 */
 	void onDBUpdate(SyncData data, String appToken);
-	
+	/**
+	 * Triggered on authentication failure / token expiration.
+	 * @param appToken
+	 */
 	void handleSecurityProblem(String appToken);
+	/**
+	 * Triggered upon an arbitrary exception during the synchronization procedure
+	 * @param appToken
+	 */
 	void handleSyncException(String appToken); 
 }

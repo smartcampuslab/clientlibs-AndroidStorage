@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,6 +37,11 @@ import eu.trentorise.smartcampus.storage.db.BatchUpdateModel.DeleteModel;
 import eu.trentorise.smartcampus.storage.db.BatchUpdateModel.UpdateModel;
 import eu.trentorise.smartcampus.storage.db.DBOpenHelper.DBCreator;
 
+/**
+ * A helper class that is used to provide SQLite-based implementation of the {@link ILocalStorage} interace
+ * @author raman
+ *
+ */
 public class StorageHelper implements DBCreator {
 
 	protected StorageConfiguration storageConfig = null;

@@ -15,9 +15,18 @@
  ******************************************************************************/
 package eu.trentorise.smartcampus.storage;
 
-
+/**
+ * Prototype for the batch modification element descriptors. 
+ * @author raman
+ *
+ */
 public class BatchModel {
 
+	/**
+	 * Descriptor of 'delete' action element. Defines id of the object to be deleted and its class.
+	 * @author raman
+	 *
+	 */
 	public static class DeleteModel extends BatchModel {
 		public String id;
 		public Class<? extends BasicObject> cls;
@@ -27,6 +36,11 @@ public class BatchModel {
 			this.cls = cls;
 		}
 	}
+	/**
+	 * Descriptor of 'create' action element. Defines the object to be created.
+	 * @author raman
+	 *
+	 */
 	public static class CreateModel extends BatchModel {
 		public BasicObject object;
 		public CreateModel(BasicObject object) {
@@ -34,6 +48,12 @@ public class BatchModel {
 			this.object = object;
 		}
 	}
+	/**
+	 * Descriptor of 'update' action element. Defines the object to be modified and the 'upsert' flag 
+	 * specifying whether the object should be created or not in case it is not yet present.
+	 * @author raman
+	 *
+	 */
 	public static class UpdateModel extends BatchModel {
 		public  BasicObject object;
 		public boolean upsert;

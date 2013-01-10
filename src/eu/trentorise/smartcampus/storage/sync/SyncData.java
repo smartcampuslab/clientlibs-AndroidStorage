@@ -20,6 +20,13 @@ import java.util.Map;
 
 import android.util.Pair;
 
+/**
+ * Container for synchronization data. Maps object type (java canonical name) to the 
+ * list of deleted object IDs and to the list of updated objects. contains also the 
+ * max version in the updated objects
+ * @author raman
+ *
+ */
 public class SyncData {
 
 	private long version;
@@ -61,11 +68,11 @@ public class SyncData {
 		this.deleted = deleted;
 	}
 
-	public List<Pair<String, String>> getSyncElements() {
+	List<Pair<String, String>> getSyncElements() {
 		return syncElements;
 	}
 
-	public void setSyncElements(List<Pair<String, String>> syncElements) {
+	void setSyncElements(List<Pair<String, String>> syncElements) {
 		this.syncElements = syncElements;
 	}
 

@@ -27,6 +27,11 @@ import eu.trentorise.smartcampus.storage.sync.SyncData;
 import eu.trentorise.smartcampus.storage.sync.SyncStorageConfiguration;
 import eu.trentorise.smartcampus.storage.sync.SyncStorageHelper;
 
+/**
+ * Manages the synchronization activity for the corresponding sync storage.
+ * @author raman
+ *
+ */
 public class SyncStorageTaskManager {
 
 	private static final Long SYNC_DELAY = 0L;
