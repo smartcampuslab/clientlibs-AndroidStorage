@@ -55,7 +55,7 @@ public class SyncStorageHelperWithPaging extends SyncStorageHelper {
 		String clause = selection == null || selection.trim().length() == 0 ? "" : (" WHERE " + selection);
 		String queryString = "SELECT * FROM " + tableName+ clause;
 
-		if (orderBy != null && !orderBy.isEmpty()) {
+		if (orderBy != null && orderBy.length() > 0) {
 			queryString += " ORDER BY "+orderBy;
 		}
 		

@@ -163,7 +163,7 @@ public class StorageHelper implements DBCreator {
 		String tableName = getStorageConfig().getTableName(input.getClass());
 		ContentValues target = getStorageConfig().getStorageHelper((Class<T>)input.getClass()).toContent(input);
 		String _id = target.getAsString(ILocalStorage.FIELD_ID);
-		if (_id==null || _id.isEmpty()) {
+		if (_id==null || _id.length() == 0) {
 			throw new DataException("ID field for update should not be empty.");
 		}
 		if (extensions != null) {
@@ -189,7 +189,7 @@ public class StorageHelper implements DBCreator {
 	protected <T extends BasicObject> void delete(String id, Class<T> cls, SQLiteDatabase db)
 			throws StorageConfigurationException, DataException {
 		String tableName = getStorageConfig().getTableName(cls);
-		if (id==null || id.isEmpty()) {
+		if (id==null || id.length() == 0) {
 			throw new DataException("ID field for delete should not be empty.");
 		}
 		if (db.delete(tableName, ILocalStorage.FIELD_ID + " = ?", new String[]{id}) == 0) {
