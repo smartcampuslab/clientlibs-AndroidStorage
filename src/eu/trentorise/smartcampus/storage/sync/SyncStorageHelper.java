@@ -351,10 +351,12 @@ public class SyncStorageHelper extends StorageHelper {
 	public SyncData synchronize(Context ctx, ProtocolCarrier mProtocolCarrier, String authToken, String appToken, String host, String service) throws SecurityException, ConnectionException,
 			DataException, ProtocolException, StorageConfigurationException 
 	{
-		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
-		MessageRequest req = prepareSyncRequest(data, host, service);
-		MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
-		return processResponse(ctx, res, data, appToken);
+		synchronized (helper) {
+			SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
+			MessageRequest req = prepareSyncRequest(data, host, service);
+			MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
+			return processResponse(ctx, res, data, appToken);
+		}
 	}
 
 	private SyncData processResponse(Context ctx, MessageResponse res, SyncData data, String appToken) throws StorageConfigurationException, DataException {
