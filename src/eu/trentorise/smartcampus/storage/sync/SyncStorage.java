@@ -79,21 +79,21 @@ public class SyncStorage implements ISyncStorage {
 	
 	@Override
 	public <T extends BasicObject> T create(T input) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			return helper.create(input,
 					Utils.getObjectVersion(mContext, appToken),
 					System.currentTimeMillis());
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public <T extends BasicObject> void update(T input, boolean upsert, boolean sync) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			helper.update(input, upsert, sync, Utils.getObjectVersion(mContext,appToken), System.currentTimeMillis());
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	
 	@Override
@@ -103,43 +103,43 @@ public class SyncStorage implements ISyncStorage {
 
 	@Override
 	public void delete(String id, Class<? extends BasicObject> cls) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			helper.delete(id, cls);
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public void batch(List<BatchModel> mdls) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			helper.batchUpdate(mdls,Utils.getObjectVersion(mContext,appToken), System.currentTimeMillis());
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public <T extends BasicObject> T getObjectById(String id, Class<T> cls) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			return helper.getObjectById(id, cls);
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public <T extends BasicObject> Collection<T> getObjects(Class<T> cls) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			return helper.getObjects(cls);
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public <T extends BasicObject> Collection<T> query(Class<T> cls, String selection, String[] args) throws DataException, StorageConfigurationException {
-		try {
+//		try {
 			return helper.query(cls, selection, args);
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 	@Override
 	public Cursor rawQuery(String query, String[] args) throws DataException, StorageConfigurationException {
@@ -150,17 +150,17 @@ public class SyncStorage implements ISyncStorage {
 	@Override
 	public void cleanCursor(Cursor cursor) {
 		cursor.close();
-		helper.close();
+//		helper.close();
 	}
 
 	@Override
 	public SyncData synchronize(String authToken, String host, String service) throws SecurityException,
 			ConnectionException, DataException, ProtocolException, StorageConfigurationException {
-		try {
+//		try {
 			return helper.synchronize(mContext, mProtocolCarrier, authToken, appToken, host, service);
-		} finally {
-			helper.close();
-		}	
+//		} finally {
+//			helper.close();
+//		}	
 	}
 
 	@Override

@@ -294,10 +294,10 @@ public class SyncStorageHelper extends StorageHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void cleanSyncData(SyncData result, List<Pair<String, String>> oldElements) throws StorageConfigurationException, DataException {
+	public void cleanSyncData(SyncData result, List<Pair<String, String>> oldElements, long version) throws StorageConfigurationException, DataException {
 		SQLiteDatabase db = helper.getWritableDatabase();
-		db.beginTransaction();
-		try {
+//		db.beginTransaction();
+//		try {
 			if (result.getUpdated() != null) {
 				for (Map.Entry<String, List<Object>> entry : result.getUpdated().entrySet()) {
 					Class<? extends BasicObject> cls = null;
@@ -334,7 +334,8 @@ public class SyncStorageHelper extends StorageHelper {
 					}
 				}
 			}
-			if (oldElements != null) {
+			System.err.println(" DELETING "+version);
+			if (oldElements != null && version > 0) {
 				for (Pair<String, String> elem : oldElements) {
 					db.execSQL("DELETE FROM " + TABLE_SYNC + " WHERE "
 							+ TABLE_SYNC_FIELD_ID + " = '" + elem.first
@@ -342,26 +343,26 @@ public class SyncStorageHelper extends StorageHelper {
 							+ elem.second + "'");
 				}
 			}
-			db.setTransactionSuccessful();
-		} finally {
-			db.endTransaction();
-		}
+//			db.setTransactionSuccessful();
+//		} finally {
+//			db.endTransaction();
+//		}
 	}
 
 	public SyncData synchronize(Context ctx, ProtocolCarrier mProtocolCarrier, String authToken, String appToken, String host, String service) throws SecurityException, ConnectionException,
 			DataException, ProtocolException, StorageConfigurationException 
 	{
-		synchronized (helper) {
-			SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
-			MessageRequest req = prepareSyncRequest(data, host, service);
-			MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
-			return processResponse(ctx, res, data, appToken);
-		}
+		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
+		MessageRequest req = prepareSyncRequest(data, host, service);
+		MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
+		System.err.println(" RECEIVED DATA");
+		return processResponse(ctx, res, data, appToken, data.getVersion());
 	}
 
-	private SyncData processResponse(Context ctx, MessageResponse res, SyncData data, String appToken) throws StorageConfigurationException, DataException {
+	private SyncData processResponse(Context ctx, MessageResponse res, SyncData data, String appToken, long version) throws StorageConfigurationException, DataException {
 		SyncData resData = Utils.convertJSONToSyncData(res.getBody());
-		cleanSyncData(resData, data.getSyncElements());
+		System.err.println(" HAVE DATA");
+		cleanSyncData(resData, data.getSyncElements(), version);
 		Utils.writeObjectVersion(ctx, appToken, resData.getVersion());
 		return resData;
 	}
