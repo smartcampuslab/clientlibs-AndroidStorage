@@ -349,7 +349,7 @@ public class SyncStorageHelper extends StorageHelper {
 //		}
 	}
 
-	public SyncData synchronize(Context ctx, ProtocolCarrier mProtocolCarrier, String authToken, String appToken, String host, String service) throws SecurityException, ConnectionException,
+	public synchronized SyncData synchronize(Context ctx, ProtocolCarrier mProtocolCarrier, String authToken, String appToken, String host, String service) throws SecurityException, ConnectionException,
 			DataException, ProtocolException, StorageConfigurationException 
 	{
 		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
