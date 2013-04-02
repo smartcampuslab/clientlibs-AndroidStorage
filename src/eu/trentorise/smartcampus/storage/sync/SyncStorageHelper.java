@@ -334,7 +334,6 @@ public class SyncStorageHelper extends StorageHelper {
 					}
 				}
 			}
-			System.err.println(" DELETING "+version);
 			if (oldElements != null && version > 0) {
 				for (Pair<String, String> elem : oldElements) {
 					db.execSQL("DELETE FROM " + TABLE_SYNC + " WHERE "
@@ -355,13 +354,11 @@ public class SyncStorageHelper extends StorageHelper {
 		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
 		MessageRequest req = prepareSyncRequest(data, host, service);
 		MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
-		System.err.println(" RECEIVED DATA");
 		return processResponse(ctx, res, data, appToken, data.getVersion());
 	}
 
 	private SyncData processResponse(Context ctx, MessageResponse res, SyncData data, String appToken, long version) throws StorageConfigurationException, DataException {
 		SyncData resData = Utils.convertJSONToSyncData(res.getBody());
-		System.err.println(" HAVE DATA");
 		cleanSyncData(resData, data.getSyncElements(), version);
 		Utils.writeObjectVersion(ctx, appToken, resData.getVersion());
 		Utils.writeLastObjectSyncTime(ctx, appToken, System.currentTimeMillis());
