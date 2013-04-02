@@ -364,6 +364,7 @@ public class SyncStorageHelper extends StorageHelper {
 		System.err.println(" HAVE DATA");
 		cleanSyncData(resData, data.getSyncElements(), version);
 		Utils.writeObjectVersion(ctx, appToken, resData.getVersion());
+		Utils.writeLastObjectSyncTime(ctx, appToken, System.currentTimeMillis());
 		return resData;
 	}
 

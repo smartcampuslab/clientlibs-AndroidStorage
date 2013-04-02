@@ -31,6 +31,7 @@ import eu.trentorise.smartcampus.storage.BasicObject;
  *
  */
 public class Utils {
+	private static final String PREF_SYNC_STORAGE_TIMES = "PrefSyncStorageSyncTimes";
 	private static final String PREF_SYNC_STORAGE_VERSIONS = "PrefSyncStorageObjectVersions";
 	private static final String PREF_SYNC_STORAGE_DB_VERSIONS = "PrefSyncStorageDBVersions";
 	private static final String PREF_SYNC_STORAGE_DB_NAMES = "PrefSyncStorageDBNames";
@@ -53,6 +54,17 @@ public class Utils {
 	public static long getObjectVersion(Context mContext, String appToken) {
 		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).getLong(appToken, -1);
 	}
+	
+	/**
+	 * 
+	 * @param mContext
+	 * @param appToken
+	 * @return timestamp of the last synchronization for the app
+	 */
+	public static long getLastObjectSyncTime(Context mContext, String appToken) {
+		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).getLong(appToken, -1);
+	}
+	
 	/**
 	 * Read current DB name used by the specific app from app preferences
 	 * @param mContext
@@ -70,6 +82,15 @@ public class Utils {
 	 */
 	public static void writeObjectVersion(Context mContext, String appToken, long version) {
 		mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).edit().putLong(appToken, version).commit();
+	}
+	/**
+	 * Write last synchronization timestamp to the app preferences
+	 * @param mContext
+	 * @param appToken
+	 * @param version
+	 */
+	public static void writeLastObjectSyncTime(Context mContext, String appToken, long time) {
+		mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).edit().putLong(appToken, time).commit();
 	}
 	/**
 	 * Write DB version used by the specific app to the app preferences
