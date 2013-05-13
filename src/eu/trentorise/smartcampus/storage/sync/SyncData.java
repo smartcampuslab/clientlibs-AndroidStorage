@@ -34,6 +34,9 @@ public class SyncData {
 	private Map<String,List<String>> deleted;
 	private List<Pair<String, String>> syncElements;
 	
+	private Map<String, Object> exclude;
+	private Map<String, Object> include;
+	
 	public SyncData() {
 		super();
 	}
@@ -76,4 +79,16 @@ public class SyncData {
 		this.syncElements = syncElements;
 	}
 
+	public Map<String, Object> getExclude() {
+		return exclude;
+	}
+	public void setExclude(Map<String, Object> exclude) {
+		this.exclude = exclude;
+	}
+	public Map<String, Object> getInclude() {
+		return include;
+	}
+	public void setInclude(Map<String, Object> include) {
+		this.include = include;
+	}
 }
