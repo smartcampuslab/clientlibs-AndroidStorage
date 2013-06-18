@@ -29,23 +29,27 @@ public interface SyncTaskContext {
 	/**
 	 * @param appToken
 	 * @param config
+	 * @param dbName
 	 * @return {@link SyncStorageHelper} managed by the app.
 	 */
-	SyncStorageHelper getSyncStorageHelper(String appToken, StorageConfiguration config);
+	SyncStorageHelper getSyncStorageHelper(String appToken, String dbName, StorageConfiguration config);
 	/**
 	 * Triggered when new remote sync data is available.
 	 * @param data
+	 * @param dbName
 	 * @param appToken
 	 */
-	void onDBUpdate(SyncData data, String appToken);
+	void onDBUpdate(SyncData data, String appToken, String dbName);
 	/**
 	 * Triggered on authentication failure / token expiration.
 	 * @param appToken
+	 * @param dbName
 	 */
-	void handleSecurityProblem(String appToken);
+	void handleSecurityProblem(String appToken, String dbName);
 	/**
 	 * Triggered upon an arbitrary exception during the synchronization procedure
 	 * @param appToken
+	 * @param dbName
 	 */
-	void handleSyncException(String appToken); 
+	void handleSyncException(String appToken, String dbName); 
 }

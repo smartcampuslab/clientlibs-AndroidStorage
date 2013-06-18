@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import eu.trentorise.smartcampus.protocolcarrier.ProtocolCarrier;
 import eu.trentorise.smartcampus.protocolcarrier.exceptions.ConnectionException;
@@ -44,6 +43,7 @@ public class SyncStorage implements ISyncStorage {
 	protected ProtocolCarrier mProtocolCarrier = null;
 	
 	protected String appToken = null;
+	protected String dbName = null;
 	
 	/**
 	 * Create a new version of the storage given the app, the DB name and version, and the {@link StorageConfiguration} 
@@ -57,8 +57,8 @@ public class SyncStorage implements ISyncStorage {
 	public SyncStorage(Context context, String appToken, String dbName, int dbVersion, StorageConfiguration config) {
 		this.mContext = context;
 		this.appToken = appToken;
-		Utils.writeDBName(context, appToken, dbName);
-		Utils.writeDBVersion(mContext, appToken, dbVersion);
+		this.dbName = dbName;
+		Utils.writeDBVersion(mContext, appToken, dbName, dbVersion);
 		helper = createHelper(context, dbName, dbVersion, config);
 		mProtocolCarrier = new ProtocolCarrier(context, appToken);
 	}
@@ -81,7 +81,7 @@ public class SyncStorage implements ISyncStorage {
 	public <T extends BasicObject> T create(T input) throws DataException, StorageConfigurationException {
 //		try {
 			return helper.create(input,
-					Utils.getObjectVersion(mContext, appToken),
+					Utils.getObjectVersion(mContext, appToken, dbName),
 					System.currentTimeMillis());
 //		} finally {
 //			helper.close();
@@ -90,7 +90,7 @@ public class SyncStorage implements ISyncStorage {
 	@Override
 	public <T extends BasicObject> void update(T input, boolean upsert, boolean sync) throws DataException, StorageConfigurationException {
 //		try {
-			helper.update(input, upsert, sync, Utils.getObjectVersion(mContext,appToken), System.currentTimeMillis());
+			helper.update(input, upsert, sync, Utils.getObjectVersion(mContext,appToken, dbName), System.currentTimeMillis());
 //		} finally {
 //			helper.close();
 //		}	
@@ -112,7 +112,7 @@ public class SyncStorage implements ISyncStorage {
 	@Override
 	public void batch(List<BatchModel> mdls) throws DataException, StorageConfigurationException {
 //		try {
-			helper.batchUpdate(mdls,Utils.getObjectVersion(mContext,appToken), System.currentTimeMillis());
+			helper.batchUpdate(mdls,Utils.getObjectVersion(mContext,appToken, dbName), System.currentTimeMillis());
 //		} finally {
 //			helper.close();
 //		}	
@@ -165,12 +165,12 @@ public class SyncStorage implements ISyncStorage {
 
 	@Override
 	public void setSyncVersion(long version) {
-		Utils.writeObjectVersion(mContext, appToken, version);
+		Utils.writeObjectVersion(mContext, appToken, dbName, version);
 	}
 
 	@Override
 	public long getSyncVersion() {
-		return Utils.getObjectVersion(mContext, appToken);
+		return Utils.getObjectVersion(mContext, appToken, dbName);
 	}
 
 	

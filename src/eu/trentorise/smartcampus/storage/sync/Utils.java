@@ -34,7 +34,6 @@ public class Utils {
 	private static final String PREF_SYNC_STORAGE_TIMES = "PrefSyncStorageSyncTimes";
 	private static final String PREF_SYNC_STORAGE_VERSIONS = "PrefSyncStorageObjectVersions";
 	private static final String PREF_SYNC_STORAGE_DB_VERSIONS = "PrefSyncStorageDBVersions";
-	private static final String PREF_SYNC_STORAGE_DB_NAMES = "PrefSyncStorageDBNames";
 
 	/**
 	 * Read current DB version used by the specific app from app preferences
@@ -42,8 +41,8 @@ public class Utils {
 	 * @param appToken
 	 * @return
 	 */
-	public static int getDBVersion(Context mContext, String appToken) {
-		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).getInt(appToken, 0);
+	public static int getDBVersion(Context mContext, String appToken, String dbName) {
+		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).getInt(key(appToken, dbName), 0);
 	}
 	/**
 	 * Read current value of the global object version counter.
@@ -51,8 +50,8 @@ public class Utils {
 	 * @param appToken
 	 * @return
 	 */
-	public static long getObjectVersion(Context mContext, String appToken) {
-		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).getLong(appToken, -1);
+	public static long getObjectVersion(Context mContext, String appToken, String dbName) {
+		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).getLong(key(appToken, dbName), -1);
 	}
 	
 	/**
@@ -61,27 +60,18 @@ public class Utils {
 	 * @param appToken
 	 * @return timestamp of the last synchronization for the app
 	 */
-	public static long getLastObjectSyncTime(Context mContext, String appToken) {
-		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).getLong(appToken, -1);
+	public static long getLastObjectSyncTime(Context mContext, String appToken, String dbName) {
+		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).getLong(key(appToken, dbName), -1);
 	}
 	
-	/**
-	 * Read current DB name used by the specific app from app preferences
-	 * @param mContext
-	 * @param appToken
-	 * @return
-	 */
-	public static String getDBName(Context mContext, String appToken) {
-		return mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_NAMES, Context.MODE_PRIVATE).getString(appToken, "_DB");
-	}
 	/**
 	 * Write last used global object version to the app preferences
 	 * @param mContext
 	 * @param appToken
 	 * @param version
 	 */
-	public static void writeObjectVersion(Context mContext, String appToken, long version) {
-		mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).edit().putLong(appToken, version).commit();
+	public static void writeObjectVersion(Context mContext, String appToken, String dbName, long version) {
+		mContext.getSharedPreferences(PREF_SYNC_STORAGE_VERSIONS, Context.MODE_PRIVATE).edit().putLong(key(appToken, dbName), version).commit();
 	}
 	/**
 	 * Write last synchronization timestamp to the app preferences
@@ -89,8 +79,8 @@ public class Utils {
 	 * @param appToken
 	 * @param version
 	 */
-	public static void writeLastObjectSyncTime(Context mContext, String appToken, long time) {
-		mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).edit().putLong(appToken, time).commit();
+	public static void writeLastObjectSyncTime(Context mContext, String appToken, String dbName, long time) {
+		mContext.getSharedPreferences(PREF_SYNC_STORAGE_TIMES, Context.MODE_PRIVATE).edit().putLong(key(appToken, dbName), time).commit();
 	}
 	/**
 	 * Write DB version used by the specific app to the app preferences
@@ -98,17 +88,8 @@ public class Utils {
 	 * @param appToken
 	 * @param version
 	 */
-	public static void writeDBVersion(Context mContext, String appToken, int version) {
-		mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).edit().putInt(appToken, version).commit();
-	}
-	/**
-	 * Write DB name used by the specific app to the app preferences
-	 * @param mContext
-	 * @param appToken
-	 * @param name
-	 */
-	public static void writeDBName(Context mContext, String appToken, String name) {
-		mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_NAMES, Context.MODE_PRIVATE).edit().putString(appToken, name).commit();
+	public static void writeDBVersion(Context mContext, String appToken, String dbName, int version) {
+		mContext.getSharedPreferences(PREF_SYNC_STORAGE_DB_VERSIONS, Context.MODE_PRIVATE).edit().putInt(key(appToken, dbName), version).commit();
 	}
 
     private static ObjectMapper fullMapper = new ObjectMapper();
@@ -178,5 +159,9 @@ public class Utils {
 		} catch (Exception e) {
 			return new SyncData();
 		}
+	}
+	
+	private static String key(String appToken, String dbName) {
+		return appToken + ":"+dbName;
 	}
 }

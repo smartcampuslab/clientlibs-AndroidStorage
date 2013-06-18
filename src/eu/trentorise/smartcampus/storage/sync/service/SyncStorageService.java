@@ -40,7 +40,7 @@ import eu.trentorise.smartcampus.storage.sync.Utils;
 /**
  * Default implementation of the synchronization service.
  * May be used by different apps simultaneously. For each app, a corresponding 
- * {@link SyncStorageTaskManager} instance is associated that handle the lifecycle of siynchronization
+ * {@link SyncStorageTaskManager} instance is associated that handle the lifecycle of synchronization
  * for that specific app. 
  * <p/>
  * Implements the {@link SyncTaskContext} interface to handle the specific synchronization events, 
@@ -62,6 +62,7 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 	
 	public static final String KEY_APP_TOKEN = "eu.trentorise.smartcampus.storage.sync.APP_TOKEN";
 	public static final String KEY_AUTH_TOKEN = "eu.trentorise.smartcampus.storage.sync.AUTH_TOKEN";
+	private static final String KEY_DBNAME = "eu.trentorise.smartcampus.storage.sync.DBNAME";
 
 	public static final String ACTION_AUTHENTICATION_PROBLEM = "eu.trentorise.smartcampus.storage.sync.AUTHENTICATION_PROBLEM";
 	public static final String ACTION_PROTOCOL_PROBLEM = "eu.trentorise.smartcampus.storage.sync.PROTOCOL_PROBLEM";
@@ -136,18 +137,18 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 	
 	
 	@Override
-	public SyncStorageHelper getSyncStorageHelper(String appToken, StorageConfiguration config) {
-		return new SyncStorageHelper(this, Utils.getDBName(this, appToken), Utils.getDBVersion(this, appToken), config);
+	public SyncStorageHelper getSyncStorageHelper(String appToken, String dbName, StorageConfiguration config) {
+		return new SyncStorageHelper(this, dbName, Utils.getDBVersion(this, appToken, dbName), config);
 	}
 
 
 	@Override
-	public void onDBUpdate(SyncData data, String appToken) {
+	public void onDBUpdate(SyncData data, String appToken, String dbName) {
 	}
 
 
 	@Override
-	public void handleSecurityProblem(String appToken) {
+	public void handleSecurityProblem(String appToken, String dbName) {
 		Intent broadcast = new Intent(SyncStorageService.ACTION_AUTHENTICATION_PROBLEM);
 		broadcast.putExtra(SyncStorageService.KEY_APP_TOKEN, appToken);
 		sendBroadcast(broadcast);
@@ -155,7 +156,7 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 
 
 	@Override
-	public void handleSyncException(String appToken) {
+	public void handleSyncException(String appToken, String dbName) {
 		sendBroadcast(new Intent(SyncStorageService.ACTION_PROTOCOL_PROBLEM));
 		
 	}
@@ -164,10 +165,12 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 
 	class MessageHandler extends Handler {
 
+
 		@Override
 		public void handleMessage(Message msg) {
 			String appToken = msg.getData().getString(KEY_APP_TOKEN);
 			String authToken = msg.getData().getString(KEY_AUTH_TOKEN);
+			String dbName = msg.getData().getString(KEY_DBNAME);
 			switch (msg.what) {
 				case MSG_START_SYNC_STORAGE:
 					if (appToken != null && authToken != null) {
@@ -175,7 +178,7 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 						SyncStorageTaskManager stm = storageTaskManagerMap.get(appToken);
 						SyncStorageConfiguration config = (SyncStorageConfiguration)msg.getData().getSerializable(KEY_STORAGE_CONFIG);
 						if (stm == null) {
-							stm = new SyncStorageTaskManager(SyncStorageService.this, config, appToken, authToken, SyncStorageService.this);
+							stm = new SyncStorageTaskManager(SyncStorageService.this, config, appToken, dbName, authToken, SyncStorageService.this);
 							storageTaskManagerMap.put(appToken, stm);
 							stm.start();
 							Log.d(this.getClass().getName(), "SyncStorageTaskManager for " + appToken + " started >");
@@ -191,7 +194,7 @@ public class SyncStorageService extends Service implements SyncTaskContext {
 						SyncStorageConfiguration config = (SyncStorageConfiguration)msg.getData().getSerializable(KEY_STORAGE_CONFIG);
 						SyncStorageTaskManager stm = storageTaskManagerMap.get(appToken);
 						if (stm == null && config != null && authToken != null) {
-							stm = new SyncStorageTaskManager(SyncStorageService.this, config, appToken, authToken, SyncStorageService.this);
+							stm = new SyncStorageTaskManager(SyncStorageService.this, config, appToken, dbName, authToken, SyncStorageService.this);
 							storageTaskManagerMap.put(appToken, stm);
 						}
 						if (stm != null) {

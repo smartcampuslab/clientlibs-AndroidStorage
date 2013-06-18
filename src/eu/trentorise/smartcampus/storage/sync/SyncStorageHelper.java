@@ -351,7 +351,7 @@ public class SyncStorageHelper extends StorageHelper {
 	public synchronized SyncData synchronize(Context ctx, ProtocolCarrier mProtocolCarrier, String authToken, String appToken, String host, String service) throws SecurityException, ConnectionException,
 			DataException, ProtocolException, StorageConfigurationException 
 	{
-		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken));
+		SyncData data = getDataToSync(Utils.getObjectVersion(ctx, appToken, name));
 		MessageRequest req = prepareSyncRequest(data, host, service);
 		MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
 		return processResponse(ctx, res, data, appToken, data.getVersion());
@@ -360,8 +360,8 @@ public class SyncStorageHelper extends StorageHelper {
 	private SyncData processResponse(Context ctx, MessageResponse res, SyncData data, String appToken, long version) throws StorageConfigurationException, DataException {
 		SyncData resData = Utils.convertJSONToSyncData(res.getBody());
 		cleanSyncData(resData, data.getSyncElements(), version);
-		Utils.writeObjectVersion(ctx, appToken, resData.getVersion());
-		Utils.writeLastObjectSyncTime(ctx, appToken, System.currentTimeMillis());
+		Utils.writeObjectVersion(ctx, appToken, name, resData.getVersion());
+		Utils.writeLastObjectSyncTime(ctx, appToken, name, System.currentTimeMillis());
 		return resData;
 	}
 

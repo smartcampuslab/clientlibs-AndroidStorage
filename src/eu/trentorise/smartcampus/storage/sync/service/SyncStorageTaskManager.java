@@ -41,20 +41,22 @@ public class SyncStorageTaskManager {
 	private ProtocolCarrier mProtocolCarrier = null;
 	private String appToken;
 	private String authToken;
+	private String dbName;
 	private SyncTaskContext ctx;
 	
 	TimerTask task = null;
 	Timer timer = null;
 
-	public SyncStorageTaskManager(Context context, SyncStorageConfiguration mConfig, String appToken, String authToken, SyncTaskContext ctx) {
+	public SyncStorageTaskManager(Context context, SyncStorageConfiguration mConfig, String appToken, String dbName, String authToken, SyncTaskContext ctx) {
 		super();
 		this.mConfig = mConfig;
 		this.mContext  = context;
 		this.appToken = appToken;
 		this.authToken = authToken;
+		this.dbName = dbName;
 		mProtocolCarrier = new ProtocolCarrier(context, appToken);
 		this.ctx = ctx;
-		helper = ctx.getSyncStorageHelper(appToken, mConfig.getStorageConfiguration());//new SyncStorageHelper(mContext, Utils.getDBName(mContext, appToken), Utils.getDBVersion(mContext, appToken), mConfig.getStorageConfiguration());
+		helper = ctx.getSyncStorageHelper(appToken, dbName, mConfig.getStorageConfiguration());//new SyncStorageHelper(mContext, Utils.getDBName(mContext, appToken), Utils.getDBVersion(mContext, appToken), mConfig.getStorageConfiguration());
 	}
 
 	public void start() {
@@ -121,17 +123,17 @@ public class SyncStorageTaskManager {
 			SyncData data = helper.synchronize(mContext, mProtocolCarrier, authToken, appToken, mConfig.getHost(), mConfig.getService());
 			if (data.getUpdated() != null && !data.getUpdated().isEmpty() ||
 				data.getDeleted() != null && !data.getDeleted().isEmpty())
-				ctx.onDBUpdate(data, appToken);
+				ctx.onDBUpdate(data, appToken, dbName);
 		} catch (ConnectionException e) {
 			Log.e(this.getClass().getName(), ""+e.getMessage());
 			setOffline();
 		} catch (SecurityException e) {
 			Log.e(this.getClass().getName(), ""+e.getMessage());
-			ctx.handleSecurityProblem(appToken);
+			ctx.handleSecurityProblem(appToken, dbName);
 			stop();
 		} catch (Exception e) {
 			Log.e(this.getClass().getName(), ""+e.getMessage());
-			ctx.handleSyncException(appToken);
+			ctx.handleSyncException(appToken, dbName);
 			stop();
 		} finally {
 			helper.close();

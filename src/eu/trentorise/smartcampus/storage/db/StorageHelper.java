@@ -47,7 +47,7 @@ public class StorageHelper implements DBCreator {
 	protected StorageConfiguration storageConfig = null;
 	protected DBOpenHelper helper = null;
 
-	private String name = null;
+	protected String name = null;
 
 	public StorageHelper(Context context, String dbName, int version, StorageConfiguration config) {
 		this.storageConfig = config;
