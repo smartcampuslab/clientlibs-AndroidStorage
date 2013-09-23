@@ -372,5 +372,15 @@ public class SyncStorageHelper extends StorageHelper {
 		req.setQuery("since=" + syncData.getVersion());
 		return req;
 	}
+	
+	public SyncData synchronize(Context ctx, String appToken, ISynchronizer synchronizer) throws StorageConfigurationException, DataException, SecurityException, ConnectionException, ProtocolException {
+		Long version = Utils.getObjectVersion(ctx, appToken, name);
+		SyncData data = getDataToSync(version);
+		SyncData resData = synchronizer.fetchSyncData(version, data);
+		cleanSyncData(resData, data.getSyncElements(), version);
+		Utils.writeObjectVersion(ctx, appToken, name, resData.getVersion());
+		Utils.writeLastObjectSyncTime(ctx, appToken, name, System.currentTimeMillis());
+		return resData;
+	}
 
 }

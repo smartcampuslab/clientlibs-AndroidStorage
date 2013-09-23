@@ -50,6 +50,14 @@ public interface ISyncStorage extends ILocalStorage {
 	public SyncData synchronize(String authToken, String host, String service) throws SecurityException, ConnectionException, DataException, ProtocolException, StorageConfigurationException; 
 
 	/**
+	 * Synchronize the local updates with the remote storage using custom implementation
+	 * of the remote sync call. The remote updates (if any) are received back from the service and are written to the local storage. 
+	 * @param synchronizer implementation of the {@link ISynchronizer} interface for remote synchronization
+	 * @return
+	 */
+	public SyncData synchronize(ISynchronizer synchronizer) throws SecurityException, ConnectionException, DataException, ProtocolException, StorageConfigurationException;
+	
+	/**
 	 * Set current global object version to be used to track object updates for synchronization
 	 * @param version
 	 */

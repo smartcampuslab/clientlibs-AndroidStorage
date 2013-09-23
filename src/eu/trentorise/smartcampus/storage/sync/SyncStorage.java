@@ -164,6 +164,12 @@ public class SyncStorage implements ISyncStorage {
 	}
 
 	@Override
+	public SyncData synchronize(ISynchronizer synchronizer) throws StorageConfigurationException, DataException, SecurityException, ConnectionException, ProtocolException {
+		// TODO Auto-generated method stub
+		return helper.synchronize(mContext, appToken, synchronizer);
+	}
+
+	@Override
 	public void setSyncVersion(long version) {
 		Utils.writeObjectVersion(mContext, appToken, dbName, version);
 	}
