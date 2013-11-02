@@ -373,7 +373,7 @@ public class SyncStorageHelper extends StorageHelper {
 		return req;
 	}
 	
-	public SyncData synchronize(Context ctx, String appToken, ISynchronizer synchronizer) throws StorageConfigurationException, DataException, SecurityException, ConnectionException, ProtocolException {
+	public synchronized SyncData synchronize(Context ctx, String appToken, ISynchronizer synchronizer) throws StorageConfigurationException, DataException, SecurityException, ConnectionException, ProtocolException {
 		Long version = Utils.getObjectVersion(ctx, appToken, name);
 		SyncData data = getDataToSync(version);
 		SyncData resData = synchronizer.fetchSyncData(version, data);
