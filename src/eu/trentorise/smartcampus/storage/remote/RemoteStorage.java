@@ -15,6 +15,8 @@
  ******************************************************************************/
 package eu.trentorise.smartcampus.storage.remote;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -199,8 +201,14 @@ public class RemoteStorage implements IRemoteStorage {
 		req.setMethod(Method.GET);
 		if (query != null) {
 			String queryStrObject = Utils.convertToJSON(query);
-			String queryString = "filter="+queryStrObject;
+			String queryString = null;
+			try {
+				queryString = "filter="+URLEncoder.encode(queryStrObject, "UTF8");
+			} catch (UnsupportedEncodingException e) {
+				queryString = "filter="+queryStrObject;
+			}
 			req.setQuery(queryString);
+
 		}
 		MessageResponse res = mProtocolCarrier.invokeSync(req, appToken, authToken);
 		Map<String,List<Map<String,Object>>> map = Utils.convertJSON(res.getBody(), new TypeReference<Map<String,List<Map<String,Object>>>>() {});
