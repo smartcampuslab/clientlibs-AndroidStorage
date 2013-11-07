@@ -247,9 +247,10 @@ public class SyncStorageHelper extends StorageHelper {
 		List<Pair<String, String>> syncElements = new ArrayList<Pair<String, String>>();
 		Cursor cursor = null;
 		try {
-			String query = "SELECT * FROM " + TABLE_SYNC;
+			String query = "SELECT * FROM " + TABLE_SYNC + " ORDER BY "+ILocalStorage.FIELD_UPDATE_TIME +" ASC";
 			cursor = rawQuery(query, null);
 			cursor.moveToFirst();
+			Map<String,String> uniqueUpdates = new HashMap<String, String>();
 			while (cursor.getPosition() < cursor.getCount()) {
 				String type = cursor.getString(cursor
 						.getColumnIndex(TABLE_SYNC_FIELD_TYPE));
@@ -265,10 +266,9 @@ public class SyncStorageHelper extends StorageHelper {
 						updated = new ArrayList<Object>();
 						updatedMap.put(type, updated);
 					}
-					updated.add(Utils.convertJSONToData(cursor.getString(cursor
-							.getColumnIndex(TABLE_SYNC_FIELD_DATA))));
+					uniqueUpdates.put(type+"@"+id, cursor.getString(cursor.getColumnIndex(TABLE_SYNC_FIELD_DATA)));
 				}
-					break;
+				break;
 				case ACTION_DELETE: {
 					List<String> deleted = deletedMap.get(type);
 					if (deleted == null) {
@@ -281,6 +281,10 @@ public class SyncStorageHelper extends StorageHelper {
 				}
 				syncElements.add(new Pair<String, String>(id, type));
 				cursor.moveToNext();
+			}
+			for (String s : uniqueUpdates.keySet()) {
+				String type = s.substring(0,s.indexOf('@'));
+				updatedMap.get(type).add(Utils.convertJSONToData(uniqueUpdates.get(s)));
 			}
 		} finally {
 			cursor.close();
