@@ -227,12 +227,22 @@ public class SyncStorageHelper extends StorageHelper {
 		db.beginTransaction();
 		try {
 			super.delete(id, cls, db);
-			ContentValues values = new ContentValues();
-			values.put(TABLE_SYNC_FIELD_ID, id);
-			values.put(TABLE_SYNC_FIELD_TYPE, cls.getCanonicalName());
-			values.put(ILocalStorage.FIELD_UPDATE_TIME, System.currentTimeMillis());
-			values.put(TABLE_SYNC_FIELD_ACTION, ACTION_DELETE);
-			db.insert(TABLE_SYNC, null, values);
+			// check created
+			Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SYNC + " WHERE " + 
+						 TABLE_SYNC_FIELD_ACTION +"=? AND "+
+					     TABLE_SYNC_FIELD_ID + "=? AND " +
+					     TABLE_SYNC_FIELD_TYPE + "=?", new String[]{""+ACTION_CREATE,id,cls.getCanonicalName()});
+			c.moveToFirst();
+			boolean keep = c.getInt(0) == 0;
+			db.delete(TABLE_SYNC, TABLE_SYNC_FIELD_ID + "=? AND " + TABLE_SYNC_FIELD_TYPE + "=?", new String[]{id,cls.getCanonicalName()});
+			if (keep) {
+				ContentValues values = new ContentValues();
+				values.put(TABLE_SYNC_FIELD_ID, id);
+				values.put(TABLE_SYNC_FIELD_TYPE, cls.getCanonicalName());
+				values.put(ILocalStorage.FIELD_UPDATE_TIME, System.currentTimeMillis());
+				values.put(TABLE_SYNC_FIELD_ACTION, ACTION_DELETE);
+				db.insert(TABLE_SYNC, null, values);
+			}
 			db.setTransactionSuccessful();
 		} finally {
 			db.endTransaction();
